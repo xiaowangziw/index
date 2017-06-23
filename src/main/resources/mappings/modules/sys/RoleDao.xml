@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aldb.ops.dao.RoleDao">
+	
+ 
+ <select id="queryRolesByUserId" resultType="role">
+ 	select id,name,enname,
+ 			role_type as roleType,
+ 			data_scope as dataScope,
+ 			is_sys as isSys,
+ 			useable,
+ 			a.create_by AS createBy,
+			a.create_date as createDate,
+			a.update_by AS updateBy,
+			a.update_date as updateDate,
+			a.remarks,
+			a.del_flag as delFlag 
+ 			from sys_role a
+ 			where 
+ 			a.id in (
+ 			select t.role_id from sys_user_role t where t.user_id=#{userId}
+ 			)
+ </select>
+    
+  
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	  http://www.springframework.org/schema/beans  
+	  http://www.springframework.org/schema/beans/spring-beans.xsd  
+	  http://www.springframework.org/schema/aop  
+	  http://www.springframework.org/schema/aop/spring-aop.xsd
+	  http://www.springframework.org/schema/tx  
+	  http://www.springframework.org/schema/tx/spring-tx.xsd
+	  http://www.springframework.org/schema/context   
+      http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+
+
+
+	<!-- ops 如果使用nginx作返向代理，则只需一个入口地址 即serverName的配置 -->
+	<bean id="authenticationFilter"
+		class="org.jasig.cas.client.authentication.AuthenticationFilter">
+		<property name="casServerLoginUrl" value="${cas.server.url}/login" />
+		<property name="serverName" value="${client.server.url}"></property>
+	</bean>
+
+
+
+
+
+	<bean id="ssoLogoutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter">
+		<property name="casServerUrlPrefix" value="${cas.server.url}" />
+	</bean>
+
+
+
+
+	<bean id="validationFilter"
+		class="org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter">
+		<property name="serverName" value="${client.server.url}"></property>
+		<property name="ticketValidator" ref="ticketValidator"></property>
+	</bean>
+
+
+
+
+
+	<bean id="ticketValidator"
+		class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+		<constructor-arg value="${cas.server.url}"></constructor-arg>
+	</bean>
+
+	<bean id="casConfig" class="com.aldb.ops.common.CasConfig">
+		<property name="casServerUrl" value="${cas.server.url}" />
+		<property name="clientServerUrl" value="${client.server.url}" />
+	</bean>
+
+
+	<bean id="autoSetUserDetailFilter" class="com.aldb.ops.common.AutoSetUserDetailFilter">
+		<property name="userService" ref="userServiceImpl"></property>
+	</bean>
+</beans>

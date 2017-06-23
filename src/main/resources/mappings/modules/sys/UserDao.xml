@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aldb.ops.dao.UserDao">
+	
+ 
+    
+  <select id="queryUserIdByLoginName" resultType="java.lang.String">
+  	select id from sys_user where login_name=#{loginName}
+  </select>
+	
+	
+	<select id="queryUserById" resultType="user">
+		select 
+		a.id,
+    	a.login_name as loginName,
+    	a.no,
+		a.name,
+		a.email,
+		a.phone,
+		a.mobile,
+		a.user_type as userType,
+		a.photo,
+		a.login_ip as loginIp,
+		a.login_date as loginDate,		
+		a.login_flag as loginFlag,
+		a.create_by AS createBy,
+		a.create_date as createDate,
+		a.update_by AS updateBy,
+		a.update_date as updateDate,
+		a.remarks,
+		a.del_flag as delFlag
+		from sys_user a where a.id=#{id}
+	</select>
+</mapper>

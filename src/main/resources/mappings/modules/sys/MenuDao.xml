@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aldb.ops.dao.MenuDao">
+
+
+	<select id="querymenusByRoleId" resultType="menu">
+		select id,
+		parent_id as parentId,
+		parent_ids as parentIds,
+		name,sort,href,target,icon,
+		is_show as isShow,
+		permission,
+		proj_code as projCode,
+		a.create_by AS createBy,
+		a.create_date as createDate,
+		a.update_by AS updateBy,
+		a.update_date as updateDate,
+		a.remarks,
+		a.del_flag as delFlag,
+		a.menu_mark as menuMark
+		from sys_menu a
+		where a.id in (
+		select t.menu_id from sys_role_menu t where role_id=#{roleId}
+		)
+	</select>
+
+	<select id="queryAllMenus" resultType="menu">
+		select id,
+		parent_id as parentId,
+		parent_ids as parentIds,
+		name,sort,href,target,icon,
+		is_show as isShow,
+		permission,
+		proj_code as projCode,
+		a.create_by AS createBy,
+		a.create_date as createDate,
+		a.update_by AS updateBy,
+		a.update_date as updateDate,
+		a.remarks,
+		a.del_flag as delFlag,
+		a.menu_mark as menuMark
+		from sys_menu a
+	</select>
+
+</mapper>
